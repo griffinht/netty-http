@@ -2,6 +2,7 @@ package net.stzups.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,9 +61,9 @@ public class LogFactory {
 
     private static String getStackTrace(Throwable throwable) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (PrintStream printStream = new PrintStream(byteArrayOutputStream, true, StandardCharsets.UTF_8)) {
+        try (PrintStream printStream = new PrintStream(byteArrayOutputStream, true)) {
             throwable.printStackTrace(printStream);
         }
-        return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
+        return byteArrayOutputStream.toString();
     }
 }

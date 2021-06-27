@@ -2,12 +2,6 @@ plugins {
     id 'java-library'
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-}
-
 group 'net.stzups.netty.http'
 version '1.0'
 
