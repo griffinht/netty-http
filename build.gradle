@@ -3,6 +3,7 @@ plugins {
 }
 
 group 'net.stzups'
+version '1.0'
 
 repositories {
     mavenCentral()
