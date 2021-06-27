@@ -2,9 +2,10 @@ package net.stzups.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -24,7 +25,7 @@ public class Server implements AutoCloseable {
         workerGroup = new NioEventLoopGroup();
     }
 
-    public ChannelFuture start(ChannelHandler handler) throws Exception {
+    public ChannelFuture start(ChannelInitializer<SocketChannel>  handler) throws Exception {
         return start(handler, new LoggingHandler("netty", LogLevel.DEBUG));
     }
 
@@ -32,7 +33,7 @@ public class Server implements AutoCloseable {
      * Initializes the server and binds to the specified port
      * @return close future
      */
-    public ChannelFuture start(ChannelHandler handler, LoggingHandler loggingHandler) throws Exception {
+    public ChannelFuture start(ChannelInitializer<SocketChannel> handler, LoggingHandler loggingHandler) throws Exception {
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
