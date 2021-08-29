@@ -19,5 +19,5 @@ public abstract class HttpHandler {
     /**
      * true if the request was handled, or false if it should be passed down
      */
-    public abstract boolean handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponse response) throws HttpException;
+    public abstract boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws HttpException;
 }

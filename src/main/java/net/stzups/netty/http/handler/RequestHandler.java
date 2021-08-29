@@ -21,7 +21,7 @@ public abstract class RequestHandler extends HttpHandler {
     }
 
     @Override
-    public final boolean handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponse response) throws HttpException {
+    public final boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws HttpException {
         if (!request.method().equals(HttpMethod.POST)) {
             return false;
         }
@@ -32,9 +32,9 @@ public abstract class RequestHandler extends HttpHandler {
         }
 
 
-        handleRequest(ctx, request, response);
+        handleRequest(ctx, request);
         return true;
     }
 
-    protected abstract void handleRequest(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponse response) throws HttpException;
+    protected abstract void handleRequest(ChannelHandlerContext ctx, FullHttpRequest request) throws HttpException;
 }

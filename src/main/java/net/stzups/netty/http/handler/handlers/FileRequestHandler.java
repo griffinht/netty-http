@@ -1,11 +1,7 @@
 package net.stzups.netty.http.handler.handlers;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.*;
 import net.stzups.netty.http.HttpServerHandler;
 import net.stzups.netty.http.MimeTypes;
 import net.stzups.netty.http.exception.HttpException;
@@ -71,13 +67,14 @@ public class FileRequestHandler extends HttpHandler {
     }
 
     @Override
-    public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request, HttpResponse response) throws HttpException {
+    public boolean handle(ChannelHandlerContext ctx, FullHttpRequest request) throws HttpException {
         Route route = new Route(request.uri());
 
         if (!HttpMethod.GET.equals(request.method())) {
             throw new MethodNotAllowedException(request.method(), HttpMethod.GET);
         }
 
+        DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         // redirects
         if (route.path().endsWith(DEFAULT_FILE)) { // /index.html -> /
             sendRedirect(ctx, request, response, HttpResponseStatus.PERMANENT_REDIRECT, route.path().substring(0, route.path().length() - DEFAULT_FILE.length()) + route.rawQuery());

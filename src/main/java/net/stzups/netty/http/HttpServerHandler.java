@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import net.stzups.netty.TestLog;
@@ -35,9 +34,8 @@ public class HttpServerHandler extends MessageToMessageDecoder<FullHttpRequest> 
             if (request.decoderResult().isFailure())
                 throw new BadRequestException("Decoding request resulted in " + request.decoderResult());
 
-            HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             for (HttpHandler handler : handlers) {
-                if (request.uri().startsWith(handler.getRoute()) && handler.handle(ctx, request, response)) {
+                if (request.uri().startsWith(handler.getRoute()) && handler.handle(ctx, request)) {
                     return;
                 }
             }
