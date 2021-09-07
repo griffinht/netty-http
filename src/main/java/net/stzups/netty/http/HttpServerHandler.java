@@ -40,9 +40,6 @@ public class HttpServerHandler extends MessageToMessageDecoder<FullHttpRequest> 
 
             TestLog.getLogger(ctx).warning("Reached end of http handler pipeline, serving default 200 OK");
             HttpUtils.send(ctx, request, new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK));
-        } catch (IndexOutOfBoundsException e) {
-            TestLog.getLogger(ctx).log(Level.WARNING, "Exception while handling HTTP request", e);
-            send(ctx, request, new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
         } catch (HttpException e) {
             if (e.getCause() != null) {
                 TestLog.getLogger(ctx).log(Level.INFO, "Exception while handling HTTP request", e);
@@ -50,6 +47,9 @@ public class HttpServerHandler extends MessageToMessageDecoder<FullHttpRequest> 
                 TestLog.getLogger(ctx).log(Level.INFO, e.getClass().getSimpleName() + ": " + e.getLocalizedMessage()); //non verbose log for simple exceptions
             }
             send(ctx, request, new DefaultHttpResponse(HttpVersion.HTTP_1_1, e.responseStatus()));
+        } catch (Throwable e) {
+            TestLog.getLogger(ctx).log(Level.WARNING, "Unhandled throwable, serving internal server error", e);
+            send(ctx, request, new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.INTERNAL_SERVER_ERROR));
         }
     }
 }
